@@ -1,0 +1,140 @@
+
+/* hack CSS nécessaire pour angular UI Bootstrap Accordeon (voir doc UI Bootstrap)  */
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer; 
+}
+
+/* hack CSS pour enlever le outline CSS sur l'accordeon qui fait pas joli sur mobile ainsi que le underline par défaut  */
+.accordion-toggle:focus, .accordion-toggle:link {
+    outline: none;
+    text-decoration: none;
+}
+
+/* la valeur intiale était de 11,5, ça faisait un peu gros  */
+uib-accordion h5 {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+/* hack CSS pour enlever un margin bizarre ajouté par la feuille de style bootsrap-material-theme  */
+uib-accordion .panel-group .panel + .panel {
+  margin-top: 0px;
+}
+
+/* un peu de padding quand le bouton de formulaire passe sous le champ input */
+.form-group button {
+    margin-top: 5px;
+}
+
+/* items de checklist plus lisible*/
+
+input[type="checkbox"] + span {
+    font-size: 16px;
+    color:black;
+}
+
+/* barre les items de checklist une fois checkés  */
+input[type="checkbox"] + span.checked-true {
+  text-decoration: line-through;
+  color: grey;
+}
+
+/* on enlève un peu de padding (initialement 15px) au panel des accordéons */
+.panel-body{
+    padding-top: 0;
+    padding-right: 30px;
+}
+/* on rajoute un peu de margin au champs texte ajouter (vos ajouts)*/
+input[type="text"] {
+    margin-top:15px;  
+    
+}
+
+/* checkbox grises après avoir été checkées, l'idée est plutôt de les faire moins remarquer...*/
+input[type="checkbox"]:checked:after,
+.checkbox input[type="checkbox"]:checked:after,
+.checkbox-inline input[type="checkbox"]:checked:after {
+  background-color: grey;
+  border-color: grey;
+}
+
+/* checkbox reste grise lorsqu'on focus dessus et après...*/
+input[type="checkbox"]:focus:after,
+.checkbox input[type="checkbox"]:focus:after,
+.checkbox-inline input[type="checkbox"]:focus:after {
+  border-color: inherit;
+}
+
+/* alignement vertical des colonnes dans une liste (utilisé pour séparer le bouton delete notamment) */
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
+/* icone remove bien au milieu*/
+.pull-center {
+    vertical-align: bottom;
+    cursor:pointer;
+    font-size: 1.5em;
+}
+
+/* barre de boutons de contrôle de la checklist */
+
+.above-icon {
+    display: block;
+    padding-bottom:0.3em;
+}
+
+div[aria-label="control-checklist"]{
+    padding-top: 1em;
+}
+
+/* sur mobile : entête des accordéons sur toute la largeur; espacement entre les checkbox plus important */
+@media only screen and (max-width: 780px) {
+    .col-sm-6{
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .checkbox{
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    h4 {
+      font-size:20px;  
+    }
+    h5 {
+        font-size:18px;
+    }
+}
+
+/* améliorations du print */
+@media print {
+    div[ng-controller="addItem3"], div[ng-controller="addItem"], div[ng-controller="addItem2"] {
+        display:none;
+    }
+    span[aria-label="Remove"]{
+        display:none;
+        }
+    div[aria-label="control-checklist"]{
+        display:none;
+        }
+    uib-accordion span.glyphicon {
+        display:none;
+    }
+    a.accordion-toggle::after{
+        display:none;
+    }
+    
+/* force le print à être sur deux colonnes, car il y a un bug apparemment de Chrome avec la grid bootstrap */
+    .col-sm-6{
+        width:50%;
+    }
+    .print-right{
+        float:right;
+    }
+    .print-left{
+        float:left;
+    }
+}

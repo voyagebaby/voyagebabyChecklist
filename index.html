@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="checklist">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Checklist bagages de bébé</title>      
+      
+  
+<!-- Bootstrap free theme issu de http://bootswatch.com/ . L'url des sources des fonts a été modifié pour coller à la structure sans dossiers des plugins Goodbarber-->
+<link rel="stylesheet" href="bootstrap-material-theme.css" >
+      
+<!-- tricks css perso -->
+<link rel="stylesheet" href="style.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<!-- Fast Click -->
+<script src="fastclick.js"></script>
+<!-- Angularjs -->
+<script src="angular.min.js"></script>
+      
+
+</head>
+  
+<body  class="container" ng-cloak>
+
+
+<form name="checklistForm" ng-controller="ckController">   
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- First Section Name -->
+        <h4><span class="glyphicon glyphicon-check" aria-hidden="true"></span>Affaires de bébé en bagage à main </h4>
+    </div>
+</div>
+
+<div class="row">            
+
+<!-- Multiple Checkboxes hand mandatory list -->
+
+<uib-accordion close-others="oneAtATime">
+     
+
+    <div class="col-sm-6 print-left">
+        
+    <uib-accordion-group is-open="status.open1">
+        
+    <div class="form-group">
+
+      <uib-accordion-heading>
+        <h5>Indispensable <small>({{countChecked("handMandatory") + '/' + handMandatory.length}})</small><span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': status.open1, 'glyphicon-chevron-down': !status.open1}"></span></h5>
+      </uib-accordion-heading>
+      <div class="checkbox" ng-repeat="item in handMandatory">
+    <div class="row row-eq-height">
+        <div class= "col-xs-11">
+      <label>
+        
+      <input type="checkbox" ng-model="item.checked"  name="checkboxes">
+          <span class="checked-{{item.checked}}">{{item.name}}</span>
+      </label>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-remove-circle pull-center" ng-click="removeItem($index,'handMandatory')" aria-label="Remove"></span>
+            </div>
+	       </div>
+        </div>
+          <div ng-controller="addItem">
+          <div class="input-group"> 
+       <input type="text" ng-model="inputText" class="form-control"
+                   placeholder="Ajouter l'élément...">
+              <span class="input-group-btn"><button class="btn" ng-click="addItem('handMandatory')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
+          </div>
+          </div> 
+        
+    </div>
+    </uib-accordion-group>
+    
+  
+</div>   
+
+
+<!-- Multiple Checkboxes2 autres affaires à considérer + champs libres -->
+
+<div class="col-sm-6 print-right">
+
+<uib-accordion-group is-open="status.open2">
+    
+<div class="form-group">
+<uib-accordion-heading>
+    <h5>Optionnel <small>({{countChecked("handOthers") + '/' + handOthers.length}})</small><span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': status.open2, 'glyphicon-chevron-down': !status.open2}"></span></h5>
+ </uib-accordion-heading> 
+    <div class="checkbox" ng-repeat="item in handOthers">
+      <div class="row row-eq-height">
+        <div class= "col-xs-11">
+      <label>
+        
+      <input type="checkbox" ng-model="item.checked"  name="checkboxes">
+          <span class="checked-{{item.checked}}">{{item.name}}</span>
+      </label>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-remove-circle pull-center" ng-click="removeItem($index,'handOthers')" aria-label="Remove"></span>
+            </div>
+	       </div>
+	  </div> 
+    <div ng-controller="addItem">
+          <div class="input-group"> 
+       <input type="text" ng-model="inputText" class="form-control"
+                   placeholder="Ajouter l'élément...">
+              <span class="input-group-btn"><button class="btn" ng-click="addItem('handOthers')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
+          </div>
+          </div> 
+</div>
+</uib-accordion-group>
+       
+
+</div>
+
+</uib-accordion>
+</div>
+    
+      
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- Form Name -->
+        <h4><span class="glyphicon glyphicon-check" aria-hidden="true"></span>Affaires de bébé en bagage principal</h4>
+    </div>
+</div>
+
+           
+
+<!-- Multiple Checkboxes luggage Clothes list -->
+
+<uib-accordion close-others="oneAtATime">
+     
+<div class="row"> 
+    <div class="col-sm-6 print-left">
+        
+    <uib-accordion-group is-open="status.open3">
+        
+    <div class="form-group">
+
+      <uib-accordion-heading>
+          <h5>Vêtements <small>({{countChecked("luggageClothes") + '/' + luggageClothes.length}})</small><span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': status.open3, 'glyphicon-chevron-down': !status.open3}"></span></h5>
+      </uib-accordion-heading>
+      <div class="checkbox" ng-repeat="item in luggageClothes">
+      
+          <div class="row row-eq-height">
+        <div class= "col-xs-11">
+      <label>
+        
+      <input type="checkbox" ng-model="item.checked"  name="checkboxes">
+          <span class="checked-{{item.checked}}">{{item.name}}</span>
+      </label>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-remove-circle pull-center" ng-click="removeItem($index,'luggageClothes')" aria-label="Remove"></span>
+            </div>
+	       </div>
+          
+	  </div>
+        
+         <div ng-controller="addItem">
+   <div class="input-group"> 
+   <input type="text" ng-model="inputText" class="form-control"
+               placeholder="Ajouter l'élément...">
+          <span class="input-group-btn"><button class="btn" ng-click="addItem('luggageClothes')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
+      </div>
+      </div> 
+        
+    </div>
+    </uib-accordion-group>
+        
+    </div>
+
+        <!-- luggage Food checkbox -->
+
+<div class="col-sm-6 print-right">
+<uib-accordion-group is-open="status.open4">
+    
+<div class="form-group">
+<uib-accordion-heading>
+    <h5>Repas <small>({{countChecked("luggageFood") + '/' + luggageFood.length}})</small><span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': status.open4, 'glyphicon-chevron-down': !status.open4}"></span></h5>
+ </uib-accordion-heading> 
+    <div class="checkbox" ng-repeat="item in luggageFood">
+        
+       <div class="row row-eq-height">
+        <div class= "col-xs-11">
+      <label>
+        
+      <input type="checkbox" ng-model="item.checked"  name="checkboxes">
+          <span class="checked-{{item.checked}}">{{item.name}}</span>
+      </label>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-remove-circle pull-center" ng-click="removeItem($index,'luggageFood')" aria-label="Remove"></span>
+            </div>
+	       </div>
+        
+	  </div> 
+<div ng-controller="addItem">
+   <div class="input-group"> 
+   <input type="text" ng-model="inputText" class="form-control"
+               placeholder="Ajouter l'élément...">
+          <span class="input-group-btn"><button class="btn" ng-click="addItem('luggageFood')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
+      </div>
+      </div>
+</div>
+</uib-accordion-group>
+    
+    </div>
+    
+    </div>
+
+<div class="row"> 
+    
+<!-- luggage Health checkbox -->
+
+<div class="col-sm-6 print-left">
+
+<uib-accordion-group is-open="status.open5">
+    
+<div class="form-group">
+<uib-accordion-heading>
+  <h5>Hygiène et santé <small>({{countChecked("luggageHealth") + '/' + luggageHealth.length}})</small><span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': status.open5, 'glyphicon-chevron-down': !status.open5}"></span></h5>
+ </uib-accordion-heading> 
+    <div class="checkbox" ng-repeat="item in luggageHealth">
+      
+        <div class="row row-eq-height">
+        <div class= "col-xs-11">
+      <label>
+        
+      <input type="checkbox" ng-model="item.checked"  name="checkboxes">
+          <span class="checked-{{item.checked}}">{{item.name}}</span>
+      </label>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-remove-circle pull-center" ng-click="removeItem($index,'luggageHealth')" aria-label="Remove"></span>
+            </div>
+	       </div>
+	  
+    </div> 
+<div ng-controller="addItem">
+   <div class="input-group"> 
+   <input type="text" ng-model="inputText" class="form-control"
+               placeholder="Ajouter l'élément...">
+          <span class="input-group-btn"><button class="btn" ng-click="addItem('luggageHealth')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
+      </div>
+      </div>
+</div>
+</uib-accordion-group>
+    
+    </div>
+ 
+<!-- luggage play checkbox -->
+
+<div class="col-sm-6 print-right">
+
+<uib-accordion-group is-open="status.open6">
+    
+<div class="form-group">
+<uib-accordion-heading>
+  <h5>Ludique, éveil et bien-être <small>({{countChecked("luggagePlay") + '/' + luggagePlay.length}})</small><span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': status.open6, 'glyphicon-chevron-down': !status.open6}"></span></h5>
+ </uib-accordion-heading> 
+    <div class="checkbox" ng-repeat="item in luggagePlay">
+       <div class="row row-eq-height">
+        <div class= "col-xs-11">
+      <label>
+        
+      <input type="checkbox" ng-model="item.checked"  name="checkboxes">
+          <span class="checked-{{item.checked}}">{{item.name}}</span>
+      </label>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-remove-circle pull-center" ng-click="removeItem($index,'luggagePlay')" aria-label="Remove"></span>
+            </div>
+	       </div>
+	  </div>
+    
+    <div ng-controller="addItem">
+        <div class="input-group"> 
+        <input type="text" ng-model="inputText" class="form-control"
+               placeholder="Ajouter l'élément...">
+          <span class="input-group-btn"><button class="btn" ng-click="addItem('luggagePlay')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
+      </div>
+    </div>
+</div>
+</uib-accordion-group>
+    
+</div> 
+
+</div>
+
+<div class="row"> 
+        
+<!-- luggage Stuff checkbox -->
+
+<div class="col-sm-6 print-left">
+        
+<uib-accordion-group is-open="status.open7">
+    
+<div class="form-group">
+<uib-accordion-heading>
+    <h5>Equipements <small>({{countChecked("luggageStuff") + '/' + luggageStuff.length}})</small><span class="pull-right glyphicon" ng-class="{'glyphicon-chevron-up': status.open7, 'glyphicon-chevron-down': !status.open7}"></span></h5>
+ </uib-accordion-heading> 
+    <div class="checkbox" ng-repeat="item in luggageStuff">
+       <div class="row row-eq-height">
+        <div class= "col-xs-11">
+      <label>
+        
+      <input type="checkbox" ng-model="item.checked"  name="checkboxes">
+          <span class="checked-{{item.checked}}">{{item.name}}</span>
+      </label>
+        </div>
+        <div class="col-xs-1">
+          <span class="glyphicon glyphicon-remove-circle pull-center" ng-click="removeItem($index,'luggageStuff')" aria-label="Remove"></span>
+            </div>
+	       </div>
+	  </div> 
+    <div ng-controller="addItem">
+   <div class="input-group"> 
+   <input type="text" ng-model="inputText" class="form-control"
+               placeholder="Ajouter l'élément...">
+          <span class="input-group-btn"><button class="btn" ng-click="addItem('luggageStuff')"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></span>
+      </div>
+    </div>
+</div>
+</uib-accordion-group>
+  
+</div>   
+
+
+</div>
+
+</uib-accordion>
+
+    
+
+<div class="row">
+<div class="col-xs-12">
+<!-- Buttons -->
+     
+  <div class="btn-group btn-group-justified" role="group" aria-label="control-checklist">
+      
+    <div class="btn-group btn-group-sm" role="group">
+      <button type="button" class="btn btn-default" ng-click="uncheck()"><span class="glyphicon glyphicon-unchecked above-icon" aria-hidden="true"></span>Tout décocher</button>
+     </div>
+      
+    <div class="btn-group btn-group-sm" role="group">
+    <button id="reset" name="reset" type="reset" class="btn btn-default" ng-click="formReset()"><span class="glyphicon glyphicon-refresh above-icon" aria-hidden="true"></span>Réinitialiser</button>
+    </div>
+    
+    
+     
+  
+    </div>
+
+    
+    
+</div>
+</div>
+
+    
+</form>
+
+    <script src="angular-animate.min.js"></script>
+    <script src="angular-touch.min.js"></script>
+    <script src="ui-bootstrap-tpls.min.js"></script>
+    <script src="angular-local-storage.min.js"></script>
+    <script src="checklist.js"></script>     
+ 
+  </body>
+</html>
